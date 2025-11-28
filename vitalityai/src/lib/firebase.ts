@@ -1,4 +1,4 @@
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
@@ -11,7 +11,31 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-const app = initializeApp(firebaseConfig);
+// Helper to check if config is valid
+const isConfigValid =
+  firebaseConfig.apiKey &&
+  firebaseConfig.apiKey !== "your_firebase_api_key_here" &&
+  !firebaseConfig.apiKey.includes("mock_key");
 
-export const auth = getAuth(app);
-export const db = getFirestore(app);
+let app;
+let auth: any;
+let db: any;
+
+if (isConfigValid) {
+  try {
+    app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+    auth = getAuth(app);
+    db = getFirestore(app);
+  } catch (e) {
+    console.error("Firebase initialization error:", e);
+  }
+} else {
+  console.warn(
+    "Firebase config is missing or invalid in .env.local. Firebase features will not work."
+  );
+  // Provide mock objects so imports don't crash, but usage will fail gracefully or throw
+  auth = {};
+  db = {};
+}
+
+export { auth, db };

@@ -1,24 +1,36 @@
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
-const client = new OpenAI({ apiKey: process.env.OPENAI_KEY });
-
 export async function POST(req: Request) {
-  const { text } = await req.json();
+  try {
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      return NextResponse.json(
+        { error: "OpenAI API key not configured" },
+        { status: 500 }
+      );
+    }
+    const client = new OpenAI({ apiKey });
 
-  const response = await client.audio.speech.create({
-    model: "gpt-4o-mini-tts",
-    voice: "alloy",
-    response_format: "mp3",   // IMPORTANT: latest SDK uses this
-    input: text,
-  });
+    const { text } = await req.json();
 
-  const arrayBuffer = await response.arrayBuffer();
-  const audioBuffer = Buffer.from(arrayBuffer);
+    const response = await client.audio.speech.create({
+      model: "tts-1",
+      voice: "alloy",
+      response_format: "mp3",
+      input: text,
+    });
 
-  return new NextResponse(audioBuffer, {
-    headers: {
-      "Content-Type": "audio/mpeg",
-    },
-  });
+    const arrayBuffer = await response.arrayBuffer();
+    const audioBuffer = Buffer.from(arrayBuffer);
+
+    return new NextResponse(audioBuffer, {
+      headers: {
+        "Content-Type": "audio/mpeg",
+      },
+    });
+  } catch (error: any) {
+    console.error("Error in /api/tts:", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 }
