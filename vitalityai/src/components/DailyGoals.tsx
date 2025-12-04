@@ -16,6 +16,8 @@ export default function DailyGoals() {
   const [goals, setGoals] = useState<Goal[]>([]);
   const [newGoal, setNewGoal] = useState("");
   const [recommendedGoals, setRecommendedGoals] = useState<string[]>([]);
+  const [hitMacros, setHitMacros] = useState<boolean | null>(null);
+
 
   const refreshRecommendations = () => {
     const allRecommendations = [
@@ -155,6 +157,44 @@ export default function DailyGoals() {
           ))}
         </CardContent>
       </Card>
+
+      <Card className="p-4">
+        <h3 className="text-sm font-semibold mb-2">Daily Macros Check</h3>
+
+        <p className="text-xs text-muted-foreground mb-3">
+          Did you hit your daily macros today?
+          </p>
+
+          {hitMacros === true && (
+            <div className="mb-3 flex items-center gap-2 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-800">
+              <span className="text-lg">{"\u2B50"}</span>
+              <span>
+                Good job hitting your daily macros!{" "}
+                {"\u2B50"}
+                </span>
+                </div>
+              )}
+
+          <div className="flex gap-2 mb-2">
+            <Button
+            size="sm"
+            className="text-xs"
+            onClick={() => setHitMacros(true)}
+            >
+              Yes, I did
+              </Button>
+
+            <Button
+            size="sm"
+            className="text-xs"
+            variant="outline"
+            onClick={() => setHitMacros(false)}
+            >
+              Not yet
+              </Button>
+          </div>
+
+          </Card>
     </div>
   );
 }

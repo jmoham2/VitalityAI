@@ -9,6 +9,31 @@ import { db } from "@/lib/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { useToast } from "@/components/ui/toast-notification";
 
+const MAIN_GOAL_OPTIONS = [
+  "Lose weight",
+  "Maintain weight",
+  "Gain muscle",
+  "Improve overall fitness",
+  "Improve energy & mood",
+];
+
+const ACTIVITY_LEVEL_OPTIONS = [
+  "Sedentary (little or no exercise)",
+  "Lightly active (1–2 days/week)",
+  "Moderately active (3–4 days/week)",
+  "Very active (5–6 days/week)",
+  "Athlete / intense training (7 days/week)",
+];
+
+const SLEEP_OPTIONS = [
+  "< 5 hours",
+  "5–6 hours",
+  "6–7 hours",
+  "7–8 hours",
+  "> 8 hours",
+];
+
+
 export default function OnboardingPage() {
   const router = useRouter();
   const { showToast } = useToast();
@@ -130,24 +155,74 @@ export default function OnboardingPage() {
           </div>
         </div>
 
-        <Input
-          placeholder="Your main goal (e.g., Lose weight)"
-          name="goal"
-          value={form.goal}
-          onChange={handleChange}
-        />
-        <Input
-          placeholder="Daily activity level"
-          name="activity"
-          value={form.activity}
-          onChange={handleChange}
-        />
-        <Input
-          placeholder="Average sleep hours"
-          name="sleep"
-          value={form.sleep}
-          onChange={handleChange}
-        />
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-gray-700">
+            Your main goal
+          </label>
+          <select
+            name="goal"
+            value={form.goal}
+            onChange={handleChange}
+            className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-black/80"
+            required
+          >
+            <option value="" disabled>
+              Select your main goal
+            </option>
+
+            {MAIN_GOAL_OPTIONS.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-gray-700">
+            Daily activity level
+          </label>
+          <select
+            name="activity"
+            value={form.activity}
+            onChange={handleChange}
+            className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-black/80"
+            required
+          >
+            <option value="" disabled>
+              Select your activity level
+            </option>
+
+            {ACTIVITY_LEVEL_OPTIONS.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-gray-700">
+            Average sleep per night
+          </label>
+          <select
+            name="sleep"
+            value={form.sleep}
+            onChange={handleChange}
+            className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-black/80"
+            required
+          >
+            <option value="" disabled>
+              Select your average sleep per night
+            </option>
+
+            {SLEEP_OPTIONS.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </div>
 
         <div className="space-y-3">
           <Button className="w-full" onClick={handleSubmit}>
