@@ -29,8 +29,8 @@ function RealisticHuman({ weight, height, bodyFat, gender }: { weight: number; h
   // Load standard models from local public folder
   // Xbot = Male, Michelle = Female
   const modelUrl = gender === "female" 
-    ? "/models/Michelle.glb"
-    : "/models/Xbot.glb";
+    ? "/models/Xbot.glb"
+    : "/models/Man.glb";
     
   const { scene } = useGLTF(modelUrl);
   const modelRef = useRef<THREE.Group>(null);
