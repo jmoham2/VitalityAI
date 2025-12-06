@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import VitaVoice from "./VitaVoice";
 import DailyGoals from "./DailyGoals";
 import BodyVisualizer from "./BodyVisualizer";
@@ -23,8 +23,19 @@ export default function VitaChat() {
 
   const [currentIntent, setCurrentIntent] = useState<string | null>(null);
   const [currentConfidence, setCurrentConfidence] = useState<number | null>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
+
+  const scrollToBottom = () => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   useEffect(() => {
     const storedInfo = localStorage.getItem("vita_user_info");
@@ -151,8 +162,8 @@ export default function VitaChat() {
 
       {/* Middle Column: Chat and Voice */}
       <div className="lg:col-span-2 flex flex-col gap-6 h-full">
-        <div className="flex-1 bg-white rounded-xl shadow flex flex-col overflow-hidden">
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div className="h-120 bg-white rounded-xl shadow flex flex-col overflow-hidden">
+          <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4">
             {messages.length === 0 && (
               <div className="h-full flex flex-col items-center justify-center text-gray-400">
                 <p>Start chatting with Vita!</p>
@@ -192,12 +203,11 @@ export default function VitaChat() {
           <div className="p-4 border-t bg-gray-50">
             <div className="flex gap-2">
               <input
-                className="flex-1 border p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                className="flex-1 border p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && !isTyping && sendMessage()}
                 placeholder="Ask Vita anything..."
-                disabled={isTyping}
               />
               <Button
                 onClick={sendMessage}
@@ -216,6 +226,8 @@ export default function VitaChat() {
             messages={messages}
             setMessages={setMessages}
             isTyping={isTyping}
+            setCurrentIntent={setCurrentIntent}
+            setCurrentConfidence={setCurrentConfidence}
           />
         </div>
       </div>
