@@ -75,7 +75,7 @@ export default function OnboardingPage() {
       goal: "General Health",
       activity: "Moderate",
       sleep: "7",
-      mainIntent: "General fitness questions",
+      mainIntent: "General",
     };
     localStorage.setItem("vita_user_info", JSON.stringify(guestInfo));
     router.push("/chat");

@@ -8,6 +8,7 @@ import NutritionDashboard from "./NutritionDashboard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { predictIntentWithML } from "@/lib/mlIntentClassifier";
 
 type ChatMessage = {
   role: "user" | "assistant";
@@ -20,7 +21,6 @@ export default function VitaChat() {
   const [userInfo, setUserInfo] = useState<any>(null);
   const [isTyping, setIsTyping] = useState(false);
 
-  // new: track current model intent and confidence
   const [currentIntent, setCurrentIntent] = useState<string | null>(null);
   const [currentConfidence, setCurrentConfidence] = useState<number | null>(null);
 
@@ -29,7 +29,22 @@ export default function VitaChat() {
   useEffect(() => {
     const storedInfo = localStorage.getItem("vita_user_info");
     if (storedInfo) {
-      setUserInfo(JSON.parse(storedInfo));
+      try {
+        const parsed = JSON.parse(storedInfo);
+        setUserInfo(parsed);
+
+        const mainIntent = (parsed.mainIntent || "").trim();
+        if (mainIntent.length >= 3) {
+          const { intent, confidence } = predictIntentWithML(mainIntent);
+          setCurrentIntent(intent);
+          setCurrentConfidence(confidence);
+        } else {
+          setCurrentIntent("general");
+          setCurrentConfidence(null);
+        }
+      } catch (e) {
+        console.error("Failed to parse vita_user_info", e);
+      }
     }
   }, []);
 
@@ -71,7 +86,7 @@ export default function VitaChat() {
         try {
           const errorJson = JSON.parse(errorText);
           errorMsg = errorJson.error || errorMsg;
-        } catch (e) {
+        } catch {
           // ignore
         }
         setMessages((prev) => [
@@ -96,11 +111,9 @@ export default function VitaChat() {
         setCurrentConfidence(null);
       }
 
-      // Add initial empty assistant message
       let typingMessage: ChatMessage = { role: "assistant", content: "" };
       setMessages((prev) => [...prev, typingMessage]);
 
-      // Typewriter animation
       for (let i = 0; i < fullReply.length; i++) {
         await new Promise((resolve) => setTimeout(resolve, 20));
         typingMessage = {
@@ -255,10 +268,12 @@ export default function VitaChat() {
           <CardContent className="text-sm space-y-1">
             <p>
               <span className="font-medium text-gray-500">Intent:</span>{" "}
-              {currentIntent || "general"}
+              {currentIntent ?? "not computed yet"}
             </p>
             <p>
-              <span className="font-medium text-gray-500">Confidence:</span>{" "}
+              <span className="font-medium text-gray-500">
+                Confidence:
+              </span>{" "}
               {currentConfidence != null
                 ? `${(currentConfidence * 100).toFixed(1)}%`
                 : "n/a"}

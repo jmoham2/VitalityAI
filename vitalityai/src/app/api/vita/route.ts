@@ -33,17 +33,17 @@ function isMessageTooShort(text: string): boolean {
 function getDefaultIntentFromOnboarding(userInfo: any | null): IntentLabel {
   if (!userInfo) return "general";
 
-  const goal = userInfo.goal || "";
-  const mainIntent = userInfo.mainIntent || "";
-  const combined = `$${mainIntent}`.trim();
+  const mainIntent = (userInfo.mainIntent || "").trim();
 
-  if (!combined || combined.length < 5) {
+  // If they didn't give a main intent, just go general
+  if (!mainIntent || mainIntent.length < 3) {
     return "general";
   }
 
-  const { intent } = predictIntentWithML(combined);
+  const { intent } = predictIntentWithML(mainIntent);
   return intent ?? "general";
 }
+
 
 const INTENT_PROMPTS: Record<IntentLabel, string> = {
   general: `
