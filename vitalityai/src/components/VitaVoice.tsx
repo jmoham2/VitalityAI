@@ -9,10 +9,14 @@ export default function VitaVoice({
   messages,
   setMessages,
   isTyping = false,
+  setCurrentIntent,
+  setCurrentConfidence,
 }: {
   messages: any[];
   setMessages: any;
   isTyping?: boolean;
+  setCurrentIntent?: any;
+  setCurrentConfidence?: any;
 }) {
   const [listening, setListening] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
@@ -21,6 +25,7 @@ export default function VitaVoice({
 
   const recognitionRef = useRef<any>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const shouldStopRef = useRef(false);
 
   const [isSupported, setIsSupported] = useState(true);
 
@@ -52,6 +57,7 @@ export default function VitaVoice({
   }, []);
 
   const stopAudio = () => {
+    shouldStopRef.current = true;
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
@@ -77,6 +83,9 @@ export default function VitaVoice({
     
     const recognition = recognitionRef.current;
     if (!recognition) return;
+
+    // Reset stop flag for new listening session
+    shouldStopRef.current = false;
 
     // If already speaking or thinking, stop everything first so we can talk
     if (isSpeaking || isThinking) {
@@ -143,12 +152,24 @@ export default function VitaVoice({
       const data = await res.json();
       const fullReply = data.reply;
 
+      // Update current intent and confidence from API
+      if (setCurrentIntent) {
+        if (data.intent || data.defaultIntent) {
+          setCurrentIntent(data.intent || data.defaultIntent || "general");
+        }
+      }
+      if (setCurrentConfidence) {
+        if (typeof data.confidence === "number") {
+          setCurrentConfidence(data.confidence);
+        } else {
+          setCurrentConfidence(null);
+        }
+      }
+
       // Add empty placeholder for typing animation
       let typingMsg = { role: "assistant", content: "" };
       setMessages((prev: any[]) => [...prev, typingMsg]);
 
-      setIsThinking(false);
-      // setIsSpeaking(true); // Moved down to sync with audio
 
       // ---- TTS REQUEST ----
       const ttsRes = await fetch("/api/tts", {
@@ -169,17 +190,41 @@ export default function VitaVoice({
       const audio = new Audio(audioURL);
       audioRef.current = audio;
 
+      // Handle audio ended - cleanup
+      const handleAudioEnd = () => {
+        setIsSpeaking(false);
+        URL.revokeObjectURL(audioURL);
+        audioRef.current = null;
+      };
+
+      audio.onended = handleAudioEnd;
+      audio.onerror = () => {
+        setIsSpeaking(false);
+        URL.revokeObjectURL(audioURL);
+        audioRef.current = null;
+      };
+
       // Wait for audio metadata to load so we know duration
       audio.onloadedmetadata = async () => {
+        // If user clicked stop, don't start speaking
+        if (shouldStopRef.current) {
+          handleAudioEnd();
+          return;
+        }
+
         const audioDuration = audio.duration; // seconds
         const totalChars = fullReply.length;
 
         // Calculate perfect typing delay
         const delayPerChar = (audioDuration * 1000) / totalChars;
 
-        // Start audio + typing together
+        // Transition from thinking to speaking
+        setIsThinking(false);
         setIsSpeaking(true);
-        audio.play().catch(() => setIsSpeaking(false));
+        audio.play().catch(() => {
+          setIsSpeaking(false);
+          handleAudioEnd();
+        });
 
         // TYPEWRITER SYNCED TO SPEECH
         for (let i = 0; i < fullReply.length; i++) {
@@ -199,11 +244,6 @@ export default function VitaVoice({
             return newMsgs;
           });
         }
-
-        audio.onended = () => {
-          setIsSpeaking(false);
-          URL.revokeObjectURL(audioURL);
-        };
       };
     };
 
@@ -222,7 +262,7 @@ export default function VitaVoice({
       <div className="flex items-center gap-4">
         <Button
           onClick={startListening}
-          disabled={listening || isThinking}
+          disabled={listening || isThinking || isSpeaking}
           className={`h-14 px-8 rounded-full text-lg font-medium transition-all duration-300 shadow-lg flex items-center gap-2 ${
             listening
               ? "bg-red-500 hover:bg-red-600 animate-pulse"
