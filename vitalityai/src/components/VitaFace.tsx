@@ -110,46 +110,81 @@ export default function VitaFace({ isSpeaking, isThinking }: { isSpeaking: boole
   }
 
   return (
-    <div className="relative w-48 h-48 mx-auto mb-6">
-      {/* Container for the face */}
-      <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-blue-500 shadow-xl bg-gray-900">
-        
-        {/* Top Half (Static) */}
-        <div className="absolute inset-0 z-10">
-          <img 
-            src={imageSrc} 
-            alt="Vita" 
-            className="w-full h-full object-cover"
-            style={{ clipPath: "inset(0 0 42% 0)" }} // Keep top 58%
-          />
-        </div>
+  <div className="relative w-48 h-48 mx-auto mb-6">
+    <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-blue-500 shadow-xl bg-black">
+      {/* Base face (static) */}
+      <img
+        src={imageSrc}
+        alt="Vita"
+        className="w-full h-full object-cover"
+      />
 
-        {/* Bottom Half (Jaw) - Animates */}
-        <motion.div 
-          className="absolute inset-0 z-20"
-          animate={isSpeaking ? { y: [0, 8, 0] } : { y: 0 }}
-          transition={{ 
-            duration: 0.2, 
-            repeat: Infinity, 
-            ease: "linear" 
+      {/* Fixed band around the mouth */}
+      <div
+        className="absolute inset-0 z-10"
+        style={{
+          clipPath: "inset(70.5% 40% 24% 42%)",
+          rotate: "4deg",
+          x: 9
+        }}
+      >
+        {/* Black fill that grows/shrinks smoothly */}
+        <motion.div
+          className="w-full h-full bg-black"
+          style={{
+            transformOrigin: "50% 0%", // grow down from top
           }}
-        >
-          <img 
-            src={imageSrc} 
-            alt="Vita Jaw" 
-            className="w-full h-full object-cover"
-            style={{ clipPath: "inset(58% 0 0 0)" }} // Keep bottom 42%
-          />
-        </motion.div>
-
-        {/* Dark background to simulate mouth inside */}
-        <div className="absolute inset-0 bg-black -z-10" />
-        
-        {/* Thinking Overlay */}
-        {isThinking && (
-          <div className="absolute inset-0 bg-blue-500/20 animate-pulse z-30 pointer-events-none" />
-        )}
+          initial={{ scaleY: 0 }}
+          animate={
+            isSpeaking
+              ? { scaleY: [0, 1, 1, 0] } // open → hold → close
+              : { scaleY: 0 }
+          }
+          transition={{
+            duration: 0.55,
+            times: [0, 0.35, 0.7, 1],
+            repeat: isSpeaking ? Infinity : 0,
+            ease: "easeInOut",
+          }}
+        />
       </div>
+
+      {/* Mouth-only overlay that moves DOWN in sync */}
+      <motion.div
+        className="absolute inset-0 z-20"
+        style={{
+          clipPath: "inset(71% 39% 20% 37%)",
+          transformOrigin: "50% 0%",
+          rotate: "6deg",
+          x: 13
+        }}
+        initial={{ y: 0 }}
+        animate={
+          isSpeaking
+            ? { y: [0, 8, 0] } // drop → hold → rise
+            : { y: 0 }
+        }
+        transition={{
+          duration: 0.55,
+          times: [0, 0.35, 0.7, 1],
+          repeat: isSpeaking ? Infinity : 0,
+          ease: "easeInOut",
+        }}
+      >
+        <img
+          src={imageSrc}
+          alt="Vita mouth"
+          className="w-full h-full object-cover"
+        />
+      </motion.div>
+
+      {/* Thinking Overlay */}
+      {isThinking && (
+        <div className="absolute inset-0 bg-blue-500/20 animate-pulse z-30 pointer-events-none" />
+      )}
     </div>
-  );
+  </div>
+);
+
+
 }
