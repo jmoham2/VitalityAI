@@ -1,0 +1,301 @@
+question,label
+"How many days a week should I work out?",general
+"Is it bad to work out late at night?",general
+"How long should a good workout be?",general
+"Should I stretch before or after lifting?",general
+"Do I need rest days if I'm not sore?",general
+"How do I know if I'm overtraining?",general
+"Is working out twice a day okay?",general
+"How much water should I drink daily?",general
+"Is it normal to feel tired after workouts?",general
+"How do I stay consistent with fitness?",general
+"What's better, morning or evening workouts?",general
+"How do I improve my overall fitness?",general
+"Is walking enough exercise on rest days?",general
+"How many steps should I get in a day?",general
+"How do I track my progress properly?",general
+"Do warmups really matter?",general
+"How long should rest days be?",general
+"Is gym anxiety normal?",general
+"How can I stop feeling intimidated at the gym?",general
+"Do fitness watches improve workouts?",general
+"How important is sleep for fitness?",general
+"Should I train when I feel sick?",general
+"What's a good warmup routine?",general
+"How do I cool down effectively?",general
+"Is it okay to skip a workout?",general
+"How do I build better discipline?",general
+"How do I avoid burnout?",general
+"How do I increase my energy levels?",general
+"Does fitness get easier with time?",general
+"Can I mix different styles of training?",general
+"Can you make me a 3 day workout split?",workout
+"How many sets should I do per exercise?",workout
+"Is push pull legs good for beginners?",workout
+"How do I build a balanced weekly plan?",workout
+"How long should I rest between sets?",workout
+"How often should I train each muscle group?",workout
+"What's the best workout split for strength?",workout
+"How do I design a full body routine?",workout
+"How heavy should I lift?",workout
+"Is training to failure necessary?",workout
+"How do I progress overload properly?",workout
+"What's a good leg day routine?",workout
+"Can you design a back workout for me?",workout
+"What's the best chest workout?",workout
+"How many reps build strength?",workout
+"How many reps build muscle?",workout
+"Should I train abs daily?",workout
+"How long should I rest between workouts?",workout
+"What's better split training or full body?",workout
+"How do I fix weak points in my lifts?",workout
+"Is HIIT good with strength training?",workout
+"What's a good beginner routine?",workout
+"How do I get better at squats?",workout
+"How can I improve my bench press?",workout
+"Do I need to track workouts?",workout
+"How do I know when to increase weight?",workout
+"Is it bad to train the same muscle two days in a row?",workout
+"Can you make me a beginner-friendly gym plan?",workout
+"Should I do cardio before or after weights?",workout
+"How do I make a routine with only dumbbells?",workout
+"How much protein should I eat daily?",nutrition
+"Are carbs bad for fitness?",nutrition
+"How many calories should I eat?",nutrition
+"Is intermittent fasting good?",nutrition
+"What should I eat before a workout?",nutrition
+"What should I eat after a workout?",nutrition
+"How do I track my macros?",nutrition
+"What are healthy snacks?",nutrition
+"Do I need protein powder?",nutrition
+"Are cheat meals okay?",nutrition
+"Is sugar bad if I'm working out?",nutrition
+"How do I stay full longer?",nutrition
+"What is a balanced diet?",nutrition
+"How much fiber do I need?",nutrition
+"How much water should I drink with a high protein diet?",nutrition
+"Are meal-prep meals healthy?",nutrition
+"How do I stop overeating at night?",nutrition
+"What is a good macro split?",nutrition
+"Should I avoid eating after 8 pm?",nutrition
+"Is milk good for muscle growth?",nutrition
+"How important are vitamins?",nutrition
+"What's a healthy breakfast for fitness?",nutrition
+"Do smoothies count as meals?",nutrition
+"Is keto good for working out?",nutrition
+"How many meals a day should I eat?",nutrition
+"Are energy drinks bad for workouts?",nutrition
+"Is low carb good for fat loss?",nutrition
+"Is olive oil healthy?",nutrition
+"What are good high-protein foods?",nutrition
+"How do I build healthy eating habits?",nutrition
+"How do I lose belly fat?",weight_loss
+"What’s a healthy calorie deficit?",weight_loss
+"How fast can I lose weight safely?",weight_loss
+"Do I need cardio to lose weight?",weight_loss
+"Is walking enough for fat loss?",weight_loss
+"How do I stop binge eating?",weight_loss
+"What foods help with fat loss?",weight_loss
+"Does lifting help with fat loss?",weight_loss
+"How do I stay full in a deficit?",weight_loss
+"Is fasting good for fat loss?",weight_loss
+"Should I cut carbs to lose weight?",weight_loss
+"How do I track calories easily?",weight_loss
+"How long does fat loss take?",weight_loss
+"Why did my weight loss stall?",weight_loss
+"Is 1200 calories too low?",weight_loss
+"Why do I feel tired in a deficit?",weight_loss
+"Do I need to count macros for fat loss?",weight_loss
+"How do I lose fat without losing muscle?",weight_loss
+"Is HIIT good for fat loss?",weight_loss
+"Are fat burner supplements worth it?",weight_loss
+"What’s a realistic weekly weight loss goal?",weight_loss
+"How do I prevent cravings?",weight_loss
+"Can I lose weight without dieting?",weight_loss
+"Is fruit bad for fat loss?",weight_loss
+"Why do I regain weight easily?",weight_loss
+"Is it okay to have cheat meals during weight loss?",weight_loss
+"Does stress affect fat loss?",weight_loss
+"How much water helps with fat loss?",weight_loss
+"How do I maintain weight after losing it?",weight_loss
+"Does eating at night cause fat gain?",weight_loss
+"How do I gain muscle fast?",muscle_gain
+"How much protein do I need for muscle growth?",muscle_gain
+"Do I need creatine to build muscle?",muscle_gain
+"How long does it take to see muscle results?",muscle_gain
+"Should I bulk or recomp?",muscle_gain
+"How do I eat more without feeling stuffed?",muscle_gain
+"Is a lean bulk better?",muscle_gain
+"How much should I be eating to gain muscle?",muscle_gain
+"Do I need to lift heavy to grow?",muscle_gain
+"What's the best split for muscle gain?",muscle_gain
+"How long should bulks last?",muscle_gain
+"Does sleep affect muscle growth?",muscle_gain
+"How often should I train each muscle?",muscle_gain
+"Do I need to track calories to bulk?",muscle_gain
+"Why am I not gaining muscle?",muscle_gain
+"How big should my calorie surplus be?",muscle_gain
+"Is it okay to gain some fat while bulking?",muscle_gain
+"How much water should I drink when bulking?",muscle_gain
+"Are supplements needed for muscle?",muscle_gain
+"Why am I losing strength in a bulk?",muscle_gain
+"How do I increase my appetite?",muscle_gain
+"Should I bulk if I'm a beginner?",muscle_gain
+"Is high volume or high weight better?",muscle_gain
+"Do beginners build muscle faster?",muscle_gain
+"Should I train to failure for growth?",muscle_gain
+"How many reps per set for hypertrophy?",muscle_gain
+"Should I eat before bed to grow muscle?",muscle_gain
+"Are carbs important for building muscle?",muscle_gain
+"Do push pull legs work for hypertrophy?",muscle_gain
+"Should I bulk or cut first?",muscle_gain
+"Is creatine safe?",supplements
+"How much creatine should I take?",supplements
+"Do I need protein powder?",supplements
+"What does pre-workout actually do?",supplements
+"Does caffeine improve workouts?",supplements
+"Are BCAAs worth it?",supplements
+"What vitamins should lifters take?",supplements
+"Is fish oil helpful?",supplements
+"What supplements help with strength?",supplements
+"What’s the best supplement for beginners?",supplements
+"Is pre-workout bad for your heart?",supplements
+"Do pump supplements work?",supplements
+"What are good natural supplements?",supplements
+"Is creatine bad for kidneys?",supplements
+"How do electrolytes help workouts?",supplements
+"Are fat burners safe?",supplements
+"Do greens powders actually work?",supplements
+"Is whey isolate better than concentrate?",supplements
+"Do I need magnesium?",supplements
+"Should teenagers take supplements?",supplements
+"How often should I take creatine?",supplements
+"Is creatine loading needed?",supplements
+"What supplements help recovery?",supplements
+"Does zinc boost testosterone?",supplements
+"Is melatonin safe for sleep?",supplements
+"Does collagen help joints?",supplements
+"What supplements help with energy?",supplements
+"Do multivitamins matter?",supplements
+"Is creatine good for fat loss?",supplements
+"Do supplements expire?",supplements
+"How do I fix sore muscles?",recovery
+"Should I stretch sore muscles?",recovery
+"Is foam rolling useful?",recovery
+"How long does soreness last?",recovery
+"Should I train if I'm sore?",recovery
+"How do I warm up properly?",recovery
+"Does icing help injuries?",recovery
+"How do I prevent injuries?",recovery
+"What's a good cooldown routine?",recovery
+"How long should I rest after heavy leg day?",recovery
+"Why do my joints hurt when lifting?",recovery
+"How do I fix knee pain when squatting?",recovery
+"How can I improve mobility?",recovery
+"Does massage help recovery?",recovery
+"How much sleep helps recovery?",recovery
+"Why am I always sore?",recovery
+"Is stretching every day good?",recovery
+"Does hydration affect soreness?",recovery
+"How do I stop pulling muscles?",recovery
+"Are saunas good for recovery?",recovery
+"Should I ice or heat soreness?",recovery
+"Why do I get back pain after deadlifts?",recovery
+"How do I prevent shoulder injuries?",recovery
+"Should I do mobility before or after workouts?",recovery
+"How long should recovery take after heavy lifting?",recovery
+"Can stress cause soreness?",recovery
+"Does creatine help recovery?",recovery
+"What helps with tendon pain?",recovery
+"Is yoga good for recovery?",recovery
+"How do I feel less stiff in the morning?",recovery
+"I'm new to the gym, where do I start?",beginner
+"How do I use dumbbells safely?",beginner
+"Is lifting safe for teenagers?",beginner
+"How do I start strength training?",beginner
+"What should my first workout be?",beginner
+"Do I need a personal trainer?",beginner
+"How heavy should beginners lift?",beginner
+"What are beginner-friendly machines?",beginner
+"Should beginners do full body workouts?",beginner
+"How long should beginner workouts be?",beginner
+"How do I improve my form?",beginner
+"Is it normal to feel lost at the gym?",beginner
+"How do I track my beginner progress?",beginner
+"Should beginners do cardio first?",beginner
+"How often should beginners workout?",beginner
+"What mistakes do beginners make?",beginner
+"How do I avoid injury as a beginner?",beginner
+"Is soreness normal for beginners?",beginner
+"Should beginners stretch daily?",beginner
+"What's the best beginner program?",beginner
+"How do I build confidence as a beginner?",beginner
+"Are machines better than free weights?",beginner
+"How do I know if my form is correct?",beginner
+"What shoes should I wear to the gym?",beginner
+"Do beginners need rest days?",beginner
+"How fast will I see results as a beginner?",beginner
+"Is home workout ok for beginners?",beginner
+"How do I warm up as a beginner?",beginner
+"How do I pick the right weights?",beginner
+"Why do I sweat so much as a beginner?",beginner
+"How do I get better at running?",cardio
+"How long should my runs be?",cardio
+"Is HIIT better than steady cardio?",cardio
+"How often should I do cardio?",cardio
+"Does cardio kill gains?",cardio
+"What’s the best cardio for fat loss?",cardio
+"How do I improve endurance?",cardio
+"Is cycling better than running?",cardio
+"How do I breathe properly while running?",cardio
+"What heart rate should I train at?",cardio
+"How long does it take to build stamina?",cardio
+"Is fasted cardio good?",cardio
+"How do I pace myself while running?",cardio
+"How many steps do I need for health?",cardio
+"Should I run every day?",cardio
+"What are good beginner cardio workouts?",cardio
+"Is jump rope good cardio?",cardio
+"How can I run without shin pain?",cardio
+"Is elliptical good for fitness?",cardio
+"Should I do cardio before lifting?",cardio
+"How do I track my cardio progress?",cardio
+"What is zone 2 cardio?",cardio
+"How do I start jogging?",cardio
+"Can I do cardio at home?",cardio
+"What’s a good 20 minute cardio routine?",cardio
+"Why do I get tired so fast during cardio?",cardio
+"Is rowing better than running?",cardio
+"How do I run longer distances?",cardio
+"What shoes are best for running?",cardio
+"Does cardio improve mood?",cardio
+"How do I stay motivated to work out?",lifestyle
+"How do I build discipline?",lifestyle
+"How do I stop quitting fitness?",lifestyle
+"How do I make fitness a habit?",lifestyle
+"How do I stick to a routine?",lifestyle
+"What do I do when I lose motivation?",lifestyle
+"How do I stop emotional eating?",lifestyle
+"How do I make healthier choices daily?",lifestyle
+"How do I build confidence at the gym?",lifestyle
+"How do I fix my sleep schedule?",lifestyle
+"How do I stay consistent long-term?",lifestyle
+"Why do I always fall off track?",lifestyle
+"How do I create a fitness lifestyle?",lifestyle
+"How do I reduce stress naturally?",lifestyle
+"How do I stay accountable?",lifestyle
+"How do I balance fitness with school?",lifestyle
+"How do I balance fitness with work?",lifestyle
+"How do I maintain progress long-term?",lifestyle
+"How do I recover from burnout?",lifestyle
+"How do I set better goals?",lifestyle
+"How do I stop comparing myself to others?",lifestyle
+"Is it normal to feel unmotivated sometimes?",lifestyle
+"How do I celebrate small wins?",lifestyle
+"How do I stop procrastinating workouts?",lifestyle
+"How do I track healthy habits?",lifestyle
+"How do I build self-discipline?",lifestyle
+"How do I change my mindset?",lifestyle
+"How do I create structure in my day?",lifestyle
+"How do I avoid bad habits?",lifestyle
+"How do I stay healthy while busy?",lifestyle
