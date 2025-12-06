@@ -19,6 +19,11 @@ export default function VitaChat() {
   const [input, setInput] = useState("");
   const [userInfo, setUserInfo] = useState<any>(null);
   const [isTyping, setIsTyping] = useState(false);
+
+  // new: track current model intent and confidence
+  const [currentIntent, setCurrentIntent] = useState<string | null>(null);
+  const [currentConfidence, setCurrentConfidence] = useState<number | null>(null);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -38,25 +43,24 @@ export default function VitaChat() {
 
     setMessages(updatedMessages);
     setInput("");
-    setIsTyping(true); // Start typing state immediately to prevent double sends if we disabled input
+    setIsTyping(true);
 
     try {
-      // Gather context
       const dailyGoals = localStorage.getItem("vita_daily_goals");
       const bodyFat = localStorage.getItem("vita_body_fat");
-      
+
       const contextInfo = {
         ...userInfo,
         dailyGoals: dailyGoals ? JSON.parse(dailyGoals) : [],
-        bodyFat: bodyFat ? parseFloat(bodyFat) : null
+        bodyFat: bodyFat ? parseFloat(bodyFat) : null,
       };
 
       const res = await fetch("/api/vita", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           messages: updatedMessages,
-          userInfo: contextInfo // Pass full context
+          userInfo: contextInfo,
         }),
       });
 
@@ -79,7 +83,18 @@ export default function VitaChat() {
       }
 
       const data = await res.json();
-      const fullReply = data.reply || "I'm sorry, I couldn't generate a response.";
+      const fullReply =
+        data.reply || "I'm sorry, I couldn't generate a response.";
+
+      // update current intent and confidence from API
+      if (data.intent || data.defaultIntent) {
+        setCurrentIntent(data.intent || data.defaultIntent || "general");
+      }
+      if (typeof data.confidence === "number") {
+        setCurrentConfidence(data.confidence);
+      } else {
+        setCurrentConfidence(null);
+      }
 
       // Add initial empty assistant message
       let typingMessage: ChatMessage = { role: "assistant", content: "" };
@@ -87,7 +102,7 @@ export default function VitaChat() {
 
       // Typewriter animation
       for (let i = 0; i < fullReply.length; i++) {
-        await new Promise((resolve) => setTimeout(resolve, 20)); // Slightly faster typing
+        await new Promise((resolve) => setTimeout(resolve, 20));
         typingMessage = {
           role: "assistant",
           content: fullReply.slice(0, i + 1),
@@ -103,23 +118,25 @@ export default function VitaChat() {
       console.error("Chat Error:", error);
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: "Error: Failed to connect to the server." },
+        {
+          role: "assistant",
+          content: "Error: Failed to connect to the server.",
+        },
       ]);
     } finally {
-      setIsTyping(false); // Ensure typing stops
+      setIsTyping(false);
     }
   };
 
   return (
     <div className="p-6 max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6 h-[calc(100vh-100px)]">
-      
-      {/* Left Column: Nutrition & Goals */}
+      {/* Left Column: Nutrition and Goals */}
       <div className="lg:col-span-1 flex flex-col gap-6 h-full overflow-y-auto pr-2">
         <NutritionDashboard />
         <DailyGoals />
       </div>
 
-      {/* Middle Column: Chat & Voice (Takes up 2 columns) */}
+      {/* Middle Column: Chat and Voice */}
       <div className="lg:col-span-2 flex flex-col gap-6 h-full">
         <div className="flex-1 bg-white rounded-xl shadow flex flex-col overflow-hidden">
           <div className="flex-1 overflow-y-auto p-4 space-y-4">
@@ -129,11 +146,16 @@ export default function VitaChat() {
               </div>
             )}
             {messages.map((m, i) => (
-              <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
+              <div
+                key={i}
+                className={`flex ${
+                  m.role === "user" ? "justify-end" : "justify-start"
+                }`}
+              >
                 <div
                   className={`max-w-[80%] px-4 py-3 rounded-2xl ${
-                    m.role === "user" 
-                      ? "bg-blue-600 text-white rounded-br-none" 
+                    m.role === "user"
+                      ? "bg-blue-600 text-white rounded-br-none"
                       : "bg-gray-100 text-gray-800 rounded-bl-none"
                   }`}
                 >
@@ -141,13 +163,16 @@ export default function VitaChat() {
                 </div>
               </div>
             ))}
-            {isTyping && messages.length > 0 && messages[messages.length - 1].role === "assistant" && messages[messages.length - 1].content === "" && (
-               <div className="flex justify-start">
-                 <div className="bg-gray-100 text-gray-800 rounded-2xl rounded-bl-none px-4 py-3">
-                   <span className="animate-pulse">...</span>
-                 </div>
-               </div>
-            )}
+            {isTyping &&
+              messages.length > 0 &&
+              messages[messages.length - 1].role === "assistant" &&
+              messages[messages.length - 1].content === "" && (
+                <div className="flex justify-start">
+                  <div className="bg-gray-100 text-gray-800 rounded-2xl rounded-bl-none px-4 py-3">
+                    <span className="animate-pulse">...</span>
+                  </div>
+                </div>
+              )}
           </div>
 
           {/* Input Area */}
@@ -161,7 +186,11 @@ export default function VitaChat() {
                 placeholder="Ask Vita anything..."
                 disabled={isTyping}
               />
-              <Button onClick={sendMessage} disabled={isTyping || !input.trim()} className="bg-blue-600 hover:bg-blue-700 h-auto px-6 rounded-xl">
+              <Button
+                onClick={sendMessage}
+                disabled={isTyping || !input.trim()}
+                className="bg-blue-600 hover:bg-blue-700 h-auto px-6 rounded-xl"
+              >
                 Send
               </Button>
             </div>
@@ -170,29 +199,72 @@ export default function VitaChat() {
 
         {/* Voice Controls */}
         <div className="bg-white p-6 rounded-xl shadow">
-          <VitaVoice messages={messages} setMessages={setMessages} isTyping={isTyping} />
+          <VitaVoice
+            messages={messages}
+            setMessages={setMessages}
+            isTyping={isTyping}
+          />
         </div>
       </div>
 
-      {/* Right Column: Profile & Visualizer */}
+      {/* Right Column: Profile, Intent, and Visualizer */}
       <div className="lg:col-span-1 flex flex-col gap-6 h-full overflow-y-auto pr-2">
         {/* User Info Summary */}
         {userInfo && (
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-lg font-semibold">My Profile</CardTitle>
-              <Button variant="ghost" size="sm" onClick={() => router.push("/onboarding")}>
+              <CardTitle className="text-lg font-semibold">
+                My Profile
+              </CardTitle>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => router.push("/onboarding")}
+              >
                 Edit
               </Button>
             </CardHeader>
             <CardContent className="text-sm grid grid-cols-2 gap-2">
-              <p><span className="font-medium text-gray-500">Age:</span> {userInfo.age}</p>
-              <p><span className="font-medium text-gray-500">Height:</span> {userInfo.height}cm</p>
-              <p><span className="font-medium text-gray-500">Weight:</span> {userInfo.weight}kg</p>
-              <p><span className="font-medium text-gray-500">Goal:</span> {userInfo.goal}</p>
+              <p>
+                <span className="font-medium text-gray-500">Age:</span>{" "}
+                {userInfo.age}
+              </p>
+              <p>
+                <span className="font-medium text-gray-500">Height:</span>{" "}
+                {userInfo.height}cm
+              </p>
+              <p>
+                <span className="font-medium text-gray-500">Weight:</span>{" "}
+                {userInfo.weight}kg
+              </p>
+              <p>
+                <span className="font-medium text-gray-500">Goal:</span>{" "}
+                {userInfo.goal}
+              </p>
             </CardContent>
           </Card>
         )}
+
+        {/* Current Model Intent */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold">
+              Current model intent
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-sm space-y-1">
+            <p>
+              <span className="font-medium text-gray-500">Intent:</span>{" "}
+              {currentIntent || "general"}
+            </p>
+            <p>
+              <span className="font-medium text-gray-500">Confidence:</span>{" "}
+              {currentConfidence != null
+                ? `${(currentConfidence * 100).toFixed(1)}%`
+                : "n/a"}
+            </p>
+          </CardContent>
+        </Card>
 
         {/* Body Visualizer */}
         <BodyVisualizer userInfo={userInfo} />
@@ -200,4 +272,3 @@ export default function VitaChat() {
     </div>
   );
 }
-

@@ -33,7 +33,6 @@ const SLEEP_OPTIONS = [
   "> 8 hours",
 ];
 
-
 export default function OnboardingPage() {
   const router = useRouter();
   const { showToast } = useToast();
@@ -46,6 +45,7 @@ export default function OnboardingPage() {
     goal: "",
     activity: "",
     sleep: "",
+    mainIntent: "",
   });
 
   useEffect(() => {
@@ -75,18 +75,17 @@ export default function OnboardingPage() {
       goal: "General Health",
       activity: "Moderate",
       sleep: "7",
+      mainIntent: "General fitness questions",
     };
     localStorage.setItem("vita_user_info", JSON.stringify(guestInfo));
     router.push("/chat");
   };
 
   const handleSubmit = async () => {
-    const userId = "TEMP_USER_ID"; // replace with real auth value later
+    const userId = "TEMP_USER_ID";
 
     try {
-      // Check if db is a valid Firestore instance (it might be {} if config is missing)
-      // Also check if doc is safe to call
-      if (db && typeof db.app !== 'undefined') {
+      if (db && typeof (db as any).app !== "undefined") {
         await setDoc(doc(db, "users", userId), {
           onboarding: form,
           createdAt: new Date(),
@@ -95,12 +94,11 @@ export default function OnboardingPage() {
         console.warn("Firestore not configured, saving to localStorage instead.");
         localStorage.setItem("vita_user_info", JSON.stringify(form));
       }
-      
+
       showToast("Information saved successfully!", "success");
       router.push("/chat");
     } catch (error) {
       console.error("Error saving onboarding info:", error);
-      // Fallback to local storage if Firestore fails
       localStorage.setItem("vita_user_info", JSON.stringify(form));
       showToast("Information saved locally!", "info");
       router.push("/chat");
@@ -113,6 +111,19 @@ export default function OnboardingPage() {
         <h1 className="text-2xl font-semibold text-center">
           Tell Vita About You 💬
         </h1>
+
+        {/* Main chat intent */}
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-gray-700">
+            What do you mainly want help with?
+          </label>
+          <Input
+            placeholder="Example: choosing supplements, losing 10 lbs, building a gym routine..."
+            name="mainIntent"
+            value={form.mainIntent}
+            onChange={handleChange}
+          />
+        </div>
 
         <Input
           placeholder="Age"
@@ -132,23 +143,23 @@ export default function OnboardingPage() {
           value={form.weight}
           onChange={handleChange}
         />
-        
+
         <div className="space-y-2">
           <label className="text-sm font-medium text-gray-700">Gender</label>
           <div className="flex gap-4">
-            <Button 
+            <Button
               type="button"
               variant={form.gender === "male" ? "default" : "outline"}
               className="flex-1"
-              onClick={() => setForm({...form, gender: "male"})}
+              onClick={() => setForm({ ...form, gender: "male" })}
             >
               Male
             </Button>
-            <Button 
+            <Button
               type="button"
               variant={form.gender === "female" ? "default" : "outline"}
               className="flex-1"
-              onClick={() => setForm({...form, gender: "female"})}
+              onClick={() => setForm({ ...form, gender: "female" })}
             >
               Female
             </Button>
@@ -228,7 +239,7 @@ export default function OnboardingPage() {
           <Button className="w-full" onClick={handleSubmit}>
             Continue
           </Button>
-          
+
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
