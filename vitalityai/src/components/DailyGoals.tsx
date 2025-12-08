@@ -175,6 +175,15 @@ export default function DailyGoals() {
                 </div>
               )}
 
+          {hitMacros === false && (
+            <div className="mb-3 flex items-center gap-2 rounded-lg bg-blue-50 px-3 py-2 text-xs text-blue-800">
+              <span className="text-lg">💪</span>
+              <span>
+                Don't worry! You still have time. Focus on getting that last meal or snack in. Every gram counts!
+              </span>
+            </div>
+          )}
+
           <div className="flex gap-2 mb-2">
             <Button
             size="sm"
